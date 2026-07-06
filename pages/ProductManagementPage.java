@@ -59,21 +59,15 @@ public class ProductManagementPage {
 
    
     By general = By.xpath("//a[@id='vert-tabs-general-tab']");
-    By productCode =
-    	    By.xpath("//input[@placeholder='Enter Product Code']");
+    By productCode = By.xpath("//input[@placeholder='Enter Product Code']");
 
    
-    	By modelNo =
-    	    By.xpath("//input[@placeholder='Enter Model No /Catlog ']");
-    	 By saveBtn =
-    		        By.xpath("//button[contains(@class,'pull-right')][normalize-space()='Save']");
+   	By modelNo = By.xpath("//input[@placeholder='Enter Model No /Catlog ']");
+   	By saveBtn = By.xpath("//button[contains(@class,'pull-right')][normalize-space()='Save']");
 
     		    // ✅ Success popup
-    		    By successPopupText =
-    		        By.xpath("//*[contains(text(),'data submitted successfully')]");
-
-    		    By successOkBtn =
-    		        By.xpath("//button[normalize-space()='OK']");
+   	By successPopupText = By.xpath("//*[contains(text(),'data submitted successfully')]");
+   	By successOkBtn = By.xpath("//button[normalize-space()='OK']");
 
     	
 
@@ -93,17 +87,19 @@ public class ProductManagementPage {
             String name,
             String purchase,
             String sales) {
-
+    	//product name
         wait.until(ExpectedConditions.visibilityOfElementLocated(productName))
                 .sendKeys(name);
-
+        //purchase price
         driver.findElement(purchasePrice).sendKeys(purchase);
-
+        //sale price
         driver.findElement(salesPrice).sendKeys(sales);
     }
 
     public void fillStock(String stock) {
+    	//Click Stock details
         wait.until(ExpectedConditions.elementToBeClickable(stockDetailsTab)).click();
+        //click open stock
         WebElement opening =
                 wait.until(ExpectedConditions.visibilityOfElementLocated(openingStock));
         opening.clear();
@@ -144,6 +140,21 @@ public class ProductManagementPage {
 //            wait.until(ExpectedConditions.elementToBeClickable(tagAddBtn)).click();
             tagInput.clear();
             tagInput.sendKeys(cleanTag);
+           
+            //warehouse click
+            wait.until(ExpectedConditions.elementToBeClickable(wearhouse)).click();
+            
+            WebElement wsearch = wait.until(ExpectedConditions.elementToBeClickable(warehouseSearch));
+            wsearch.click();
+            wsearch.sendKeys(search);
+             
+            // NEW: click the actual matching warehouse from the filtered list
+            By warehouseItem = By.xpath(
+                "//button[contains(@class,'warehouse-item')][.//span[normalize-space()='" + search + "']]"
+            );
+             
+            WebElement item = wait.until(ExpectedConditions.elementToBeClickable(warehouseItem));
+            item.click();
 
 
             wait.until(ExpectedConditions.elementToBeClickable(tagAddBtn)).click();
@@ -159,19 +170,7 @@ public class ProductManagementPage {
 //        wsearch.click();
 //        wsearch.sendKeys(search);
 //        wait.until(ExpectedConditions.elementToBeClickable(closeTagModalBtn)).click();
-        wait.until(ExpectedConditions.elementToBeClickable(wearhouse)).click();
-        
-        WebElement wsearch = wait.until(ExpectedConditions.elementToBeClickable(warehouseSearch));
-        wsearch.click();
-        wsearch.sendKeys(search);
-         
-        // NEW: click the actual matching warehouse from the filtered list
-        By warehouseItem = By.xpath(
-            "//button[contains(@class,'warehouse-item')][.//span[normalize-space()='" + search + "']]"
-        );
-         
-        WebElement item = wait.until(ExpectedConditions.elementToBeClickable(warehouseItem));
-        item.click();
+       
         
         
         // -------- CLOSE TAG MODAL --------
@@ -181,7 +180,7 @@ public class ProductManagementPage {
         
 
         // -------- SAVE PRODUCT (JS CLICK) --------
-        WebElement save =
+      /*  WebElement save =
                 wait.until(ExpectedConditions.presenceOfElementLocated(saveBtn));
         js.executeScript("arguments[0].scrollIntoView({block:'center'});", save);
         try { Thread.sleep(500); } catch (Exception ignored) {}
@@ -191,18 +190,48 @@ public class ProductManagementPage {
         handleSuccessPopup();
 
         // -------- READY FOR NEXT EXCEL ROW --------
-        wait.until(ExpectedConditions.elementToBeClickable(addButton));
+        wait.until(ExpectedConditions.elementToBeClickable(addButton));*/
     }
-//    public void generaldetails(
-//            String code,
-//            String model) {
-//
-//    	wait.until(ExpectedConditions.visibilityOfElementLocated(general)).click();;
-//        wait.until(ExpectedConditions.visibilityOfElementLocated(productCode))
-//                .sendKeys(code);
-//
-//        driver.findElement(modelNo).sendKeys(model);
-//    }
+    public void generaldetails(
+            String code,
+            String model) {
+    
+//Click general details tab
+    	 wait.until(ExpectedConditions.elementToBeClickable(general)).click();
+    	 //Product code
+    	 WebElement codeField = wait.until(ExpectedConditions.visibilityOfElementLocated(productCode));
+ 	    codeField.clear();
+  	    codeField.sendKeys(code);
+    	    //model no
+    	    WebElement modelField =
+    	            wait.until(ExpectedConditions.visibilityOfElementLocated(modelNo));
+
+    	    modelField.clear();
+    	    modelField.sendKeys(model);
+
+   }
+ // -------- SAVE PRODUCT (JS CLICK) --------
+    public void saveProduct() {
+
+        JavascriptExecutor js =
+                (JavascriptExecutor) driver;
+
+        WebElement save =
+                wait.until(ExpectedConditions.presenceOfElementLocated(saveBtn));
+
+        js.executeScript(
+                "arguments[0].scrollIntoView({block:'center'});",
+                save);
+
+        js.executeScript(
+                "arguments[0].click();",
+                save);
+
+        handleSuccessPopup();
+
+        wait.until(
+                ExpectedConditions.elementToBeClickable(addButton));
+    }
 
     // ================= HELPER =================
 

@@ -43,13 +43,16 @@ public class ProductManagementTest extends BaseTest {
             page.fillStock(
                     data.get("Opening Stock")
             );
-
+  
             page.addTagAndSave(
             		data.get("Tag ID"),
             		data.get("Warehouse")
             		);
-//            page.generaldetails(data.get("Product Code"),
-//            		data.get("Model No"));
+            
+            page.generaldetails(data.get("Product Code"),
+            		data.get("Model No"));
+            
+            page.saveProduct();
 
             
         }
