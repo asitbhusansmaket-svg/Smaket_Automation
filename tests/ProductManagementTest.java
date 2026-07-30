@@ -16,7 +16,7 @@ public class ProductManagementTest extends BaseTest {
 
         List<Map<String, String>> products =
                 ExcelUtils.readProductManagementData(
-                        "D:\\Eclipse\\DataUpload\\ProductManagement.xlsx",
+                        "C:\\Users\\Administrator\\Downloads\\Audit export Warehouse Test.xlsx",
                         "Sheet1"
                 );
 
@@ -33,7 +33,7 @@ public class ProductManagementTest extends BaseTest {
 //                    data.get("Product Name"),
 //                    data.get("Purchase Base Price"),
 //                    data.get("Sales Base Price")
-//            );
+//            );"C:\Users\Administrator\Downloads\Audit export Warehouse Test.xlsx"
             page.fillProduct(
                     data.get("Product Name"), 
                     data.get("Purchase Base Price"),
@@ -44,13 +44,19 @@ public class ProductManagementTest extends BaseTest {
                     data.get("Opening Stock")
             );
   
-            page.addTagAndSave(
+           /* page.addTagAndSave(
+            		data.get("Serial no")
             		data.get("Tag ID"),
+            		data.get("Warehouse")
+            		);*/
+            page.addTagAndSave(
+            		data.get("Serial no"),
             		data.get("Warehouse")
             		);
             
             page.generaldetails(data.get("Product Code"),
-            		data.get("Model No"));
+            		data.get("Model No"),
+            		data.get("Description"));
             
             page.saveProduct();
 

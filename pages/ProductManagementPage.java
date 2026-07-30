@@ -39,6 +39,7 @@ public class ProductManagementPage {
 
     By slNoTagBtn =
         By.xpath("//*[contains(text(),'Sl No/TAG No')]");
+    By serialno = By.xpath("//input[@placeholder='Enter Serial No']");
 
     By tagIdInput =
         By.xpath("//input[@placeholder='Enter Tag ID']");
@@ -63,6 +64,7 @@ public class ProductManagementPage {
 
    
    	By modelNo = By.xpath("//input[@placeholder='Enter Model No /Catlog ']");
+   	By desc= By.xpath("//textarea[@placeholder='Enter Description']");
    	By saveBtn = By.xpath("//button[contains(@class,'pull-right')][normalize-space()='Save']");
 
     		    // ✅ Success popup
@@ -91,9 +93,9 @@ public class ProductManagementPage {
         wait.until(ExpectedConditions.visibilityOfElementLocated(productName))
                 .sendKeys(name);
         //purchase price
-        driver.findElement(purchasePrice).sendKeys(purchase);
+        //driver.findElement(purchasePrice).sendKeys(purchase);
         //sale price
-        driver.findElement(salesPrice).sendKeys(sales);
+        //driver.findElement(salesPrice).sendKeys(sales);
     }
 
     public void fillStock(String stock) {
@@ -113,11 +115,11 @@ public class ProductManagementPage {
      * prepares page for next Excel row
      */
     
-    public void addTagAndSave(String tagIds, String search) {
+    public void addTagAndSave(String ser, String search) {
 
-        if (tagIds == null || tagIds.trim().isEmpty()) {
+       /* if (tagIds == null || tagIds.trim().isEmpty()) {
             throw new RuntimeException("❌ Tag ID is empty in Excel");
-        }
+        }*/
 
         JavascriptExecutor js = (JavascriptExecutor) driver;
 
@@ -125,7 +127,7 @@ public class ProductManagementPage {
         wait.until(ExpectedConditions.elementToBeClickable(slNoTagBtn)).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(modalVisible));
 
-        String[] tags = tagIds.split(",");
+        /*String[] tags = tagIds.split(",");
 
         for (String tag : tags) {
 
@@ -139,8 +141,12 @@ public class ProductManagementPage {
 //
 //            wait.until(ExpectedConditions.elementToBeClickable(tagAddBtn)).click();
             tagInput.clear();
-            tagInput.sendKeys(cleanTag);
-           
+            tagInput.sendKeys(cleanTag);*/
+           // serial no click
+        WebElement serial =
+	            wait.until(ExpectedConditions.visibilityOfElementLocated(serialno));
+	    serial.clear();
+	    serial.sendKeys(ser);
             //warehouse click
             wait.until(ExpectedConditions.elementToBeClickable(wearhouse)).click();
             
@@ -160,11 +166,11 @@ public class ProductManagementPage {
             wait.until(ExpectedConditions.elementToBeClickable(tagAddBtn)).click();
 
             // Wait until tag appears in table
-            wait.until(ExpectedConditions.visibilityOfElementLocated(
+           /* wait.until(ExpectedConditions.visibilityOfElementLocated(
                     By.xpath("//td[normalize-space()='" + cleanTag + "']")));
 
             try { Thread.sleep(300); } catch (Exception ignored) {}
-        }
+        }*/
 //        wait.until(ExpectedConditions.elementToBeClickable(wearhouse)).click();
 //        WebElement wsearch=wait.until(ExpectedConditions.elementToBeClickable(warehouseSearch));
 //        wsearch.click();
@@ -194,7 +200,8 @@ public class ProductManagementPage {
     }
     public void generaldetails(
             String code,
-            String model) {
+            String model,
+            String description) {
     
 //Click general details tab
     	 wait.until(ExpectedConditions.elementToBeClickable(general)).click();
@@ -208,6 +215,12 @@ public class ProductManagementPage {
 
     	    modelField.clear();
     	    modelField.sendKeys(model);
+    	    //Description
+    	    WebElement descriptionField =
+    	            wait.until(ExpectedConditions.visibilityOfElementLocated(desc));
+
+    	    descriptionField.clear();
+    	    descriptionField.sendKeys(description);
 
    }
  // -------- SAVE PRODUCT (JS CLICK) --------
